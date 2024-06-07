@@ -2,8 +2,11 @@ package arnhold.sampaio.luiza.maria.galeria;
 
 import android.os.Bundle;
 
+
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -20,5 +23,11 @@ public class PhotoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Toolbar toolbar = findViewById(R.id.tbPhoto); // obtendo o elemento "tbMain"
+        setSupportActionBar(toolbar); // definindo ele como ActionBar padrão da tela
+
+        ActionBar actionBar = getSupportActionBar(); // obtendo a actionBar
+        actionBar.setDisplayHomeAsUpEnabled(true); // habilitando o botao de voltar
     }
 }
