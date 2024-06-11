@@ -1,9 +1,13 @@
 package arnhold.sampaio.luiza.maria.galeria;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,5 +33,25 @@ public class PhotoActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar(); // obtendo a actionBar
         actionBar.setDisplayHomeAsUpEnabled(true); // habilitando o botao de voltar
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_tb, menu);
+        return true;
+    }
+
+    // esse metodo só será executado caso seja selecionado um item do ToolBar
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.opShare:
+                sharePhoto(); // vai compartilhar caso tenh sido selecionado uma foto
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
