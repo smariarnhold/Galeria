@@ -1,9 +1,12 @@
 package arnhold.sampaio.luiza.maria.galeria;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class PhotoActivity extends AppCompatActivity {
 
+    String photoPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,14 @@ public class PhotoActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar(); // obtendo a actionBar
         actionBar.setDisplayHomeAsUpEnabled(true); // habilitando o botao de voltar
+
+        Intent i = getIntent(); // obtendo a foto que foi enviada atraves do metodo "startPhotoActivity"
+        photoPath = i.getStringExtra("photo_path");
+
+        Bitmap bitmap = Util.getBitmap(photoPath); // carregando a foto em um bitmap
+        ImageView imPhoto = findViewById(R.id.imPhoto);
+        imPhoto.setImageBitmap(bitmap); // setando o bitmap no imageView
+
     }
 
     @Override

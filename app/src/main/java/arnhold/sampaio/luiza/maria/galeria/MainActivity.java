@@ -1,6 +1,8 @@
 package arnhold.sampaio.luiza.maria.galeria;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,8 +15,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    List<String> photos = new ArrayList<>();
+    MainAdapter mainAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +40,25 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.tbMain); // obtendo o elemento "tbMain"
         setSupportActionBar(toolbar); // definindo ele como ActionBar padrão da tela
+
+        File dir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File[] files = dir.listFiles(); // lendo a lista de fotos
+        for(int i = 0; i < files.length; i++) { // adicionando na lista de fotos
+            photos.add(files[i].getAbsolutePath()); // adicionando na lista de fotos
+        }
+        //criação do mainAdapter
+        mainAdapter = new MainAdapter(MainActivity.this, photos);
+        //setando ele no RecycleView
+        RecyclerView rvGallery = findViewById(R.id.rvGallery);
+        rvGallery.setAdapter(mainAdapter);
+        //calculando as colunas e definindo o numero maximo de linhas para exibição
+        float w = getResources().getDimension(R.dimen.itemWidth);
+        int numberOfColumns = Util.calculateNoOfColumns(MainActivity.this, w);
+        // aqui vai exibir as fotos em grid
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, numberOfColumns);
+        rvGallery.setLayoutManager(gridLayoutManager);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,4 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    // essa função eh chamada para quando o usuario clicar em uma foto, essa função resolve qual foto será aberta
+    public void startPhotoActivity(String photoPath) {
+        Intent i = new Intent(MainActivity.this, PhotoActivity.class);
+        i.putExtra("photo_path", photoPath);
+        startActivity(i);
+    }
 }
+
