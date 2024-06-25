@@ -2,6 +2,7 @@ package arnhold.sampaio.luiza.maria.galeria;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,9 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.io.File;
 
 public class PhotoActivity extends AppCompatActivity {
 
@@ -58,12 +62,18 @@ public class PhotoActivity extends AppCompatActivity {
     // esse metodo só será executado caso seja selecionado um item do ToolBar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.opShare:
-                sharePhoto(); // vai compartilhar caso tenh sido selecionado uma foto
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.opShare) {
+            sharePhoto(); // vai compartilhar caso tenh sido selecionado uma foto
+            return true;
         }
+        return super.onOptionsItemSelected(item);
+    }
+    // metodo para cpmpartiilhar a foto
+    void sharePhoto() {
+        Uri photoUri = FileProvider.getUriForFile(PhotoActivity.this, "arnhold.sampaio.luiza.maria.galeria.fileprovider", new File(photoPath)); // gerando URI para a foto
+        Intent i = new Intent(Intent.ACTION_SEND); // criamos um Intent implícito (quero enviar algo para qualquer app que me aceite!)
+        i.putExtra(Intent.EXTRA_STREAM, photoUri); // esse eh o arquivo que quero compartilhar
+        i.setType("image/jpeg"); // e esse eh o seu tipo
+        startActivity(i); // execucao do intent
     }
 }

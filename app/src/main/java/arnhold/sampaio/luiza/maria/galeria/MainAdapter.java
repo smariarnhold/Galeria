@@ -43,8 +43,6 @@ public class MainAdapter extends RecyclerView.Adapter {
             });
         }
 
-    }
-
     @Override
     public int getItemCount() {
         return photos.size();
